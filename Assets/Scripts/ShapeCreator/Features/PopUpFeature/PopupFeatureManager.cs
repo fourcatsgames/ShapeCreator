@@ -1,15 +1,15 @@
 using System.Collections.Generic;
+using Common;
 using ShapeCreator.Features.PopUpFeature.PopupBehaviours;
 using UnityEngine;
 
 namespace ShapeCreator.Features.PopUpFeature
 {
-	public class PopupFeatureManager : MonoBehaviour
+	public class PopupFeatureManager : BaseManager
 	{
 		[SerializeField] private List<BasePopupBehaviour> _popUpPrefabs;
 
-		public Transform PopupLayer => _popupLayer;
-		[SerializeField] private Transform _popupLayer;
+		
 
 		public bool TryGetPopup<T>(out T p) where T : BasePopupBehaviour
 		{
