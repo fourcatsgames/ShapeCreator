@@ -9,9 +9,9 @@ namespace ShapeCreator.Features.ShapeFeature
 		private ShapeFeatureManager _shapeFeatureManager;
 		private Dictionary<string, BaseShape> _shapes = new Dictionary<string, BaseShape>();
 
-		public void Inject(ShapeFeatureManager manager)
+		public void Inject(BaseManager manager)
 		{
-			_shapeFeatureManager = manager;
+			_shapeFeatureManager = (ShapeFeatureManager)manager;
 		}
 
 		public void CreateShape(string shapeId, string shapeType)
@@ -30,7 +30,7 @@ namespace ShapeCreator.Features.ShapeFeature
 				return;
 			}
 
-			BaseShape shape = Object.Instantiate(shapePrefab, _shapeFeatureManager.ShapeLayer.transform);
+			BaseShape shape = Object.Instantiate(shapePrefab, _shapeFeatureManager.Layer);
 			_shapes.Add(shapeId, shape);
 			
 		}

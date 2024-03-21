@@ -1,15 +1,11 @@
 using System.Collections.Generic;
+using Common;
 using UnityEngine;
 
 namespace ShapeCreator.Features.ShapeFeature
 {
-	public class ShapeFeatureManager : MonoBehaviour
+	public class ShapeFeatureManager : BaseManager
 	{
-		//public List<string> ShapeNames => _shapeNames;
-		public GameObject ShapeLayer => _shapeLayer;
-
-		[SerializeField] private GameObject _shapeLayer;
-		[Space(10)]
 		[SerializeField] private List<string> _shapeNames;
 		[SerializeField] private List<BaseShape> _shapePrefabs;
 

@@ -1,6 +1,7 @@
 using Common;
 using ShapeCreator.Features.PopUpFeature;
 using ShapeCreator.Features.ShapeFeature;
+using ShapeCreator.Features.TextCommandFeature;
 using UnityEngine;
 
 namespace ShapeCreator
@@ -9,8 +10,9 @@ namespace ShapeCreator
 	{
 
 		[Header("Managers")]
-		[SerializeField] private PopupFeatureManager _popupManager;
-		[SerializeField] private ShapeFeatureManager _shapeManager;
+		[SerializeField] private BaseManager _popupManager;
+		[SerializeField] private BaseManager _shapeManager;
+		[SerializeField] private BaseManager _commandManager;
 
 		private void Awake() { }
 
@@ -24,6 +26,12 @@ namespace ShapeCreator
 			shapeFeature.Inject(_shapeManager);
 			FeatureResolver.AddFeature(shapeFeature);
 
+			TextCommandFeature textCommandFeature = new TextCommandFeature();
+			textCommandFeature.Inject(_commandManager);
+			FeatureResolver.AddFeature(textCommandFeature);
+
+			textCommandFeature.Init();
+			
 			shapeFeature.CreateShape("test", "Triangle");
 		}
 

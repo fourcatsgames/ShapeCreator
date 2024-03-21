@@ -44,7 +44,7 @@ namespace ShapeCreator.Features.PopUpFeature
 
 			//get popup from queue
 			BasePopupBehaviour popup = _popupsQueue.Dequeue();
-			GameObject p = GameObject.Instantiate(popup.gameObject, _popupFeatureManager.PopupLayer);
+			GameObject p = GameObject.Instantiate(popup.gameObject, _popupFeatureManager.Layer);
 			popup = p.GetComponent<BasePopupBehaviour>();
 			popup.Show();
 		}
@@ -54,9 +54,9 @@ namespace ShapeCreator.Features.PopUpFeature
 			ShowPopup();
 		}
 
-		public void Inject(PopupFeatureManager popupManager)
+		public void Inject(BaseManager popupManager)
 		{
-			_popupFeatureManager = popupManager;
+			_popupFeatureManager = (PopupFeatureManager)popupManager;
 		}
 	}
 }
