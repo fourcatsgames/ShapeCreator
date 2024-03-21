@@ -32,7 +32,6 @@ namespace ShapeCreator
 
 			textCommandFeature.Init();
 			
-			shapeFeature.CreateShape("test", "Triangle");
 		}
 
 	}

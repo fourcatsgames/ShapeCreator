@@ -12,7 +12,6 @@ namespace ShapeCreator.Features.TextCommandFeature
 		[Space(10)]
 		[SerializeField] private List<string> _commandNames;
 		public List<string> CommandNames => _commandNames;
-
-		[SerializeField] private List<ICommand> _commands;
+		
 	}
 }

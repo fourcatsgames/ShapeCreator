@@ -14,7 +14,7 @@ namespace ShapeCreator.Features.ShapeFeature
 			_shapeFeatureManager = (ShapeFeatureManager)manager;
 		}
 
-		public void CreateShape(string shapeId, string shapeType)
+		public void CreateShape(string shapeId, ShapeType shapeType)
 		{
 			// check if shape exists
 			if (_shapes.ContainsKey(shapeId))
@@ -24,7 +24,7 @@ namespace ShapeCreator.Features.ShapeFeature
 			}
 
 			// check if shape type exists
-			if (!_shapeFeatureManager.TryGetShapePrefab(shapeType, out BaseShape shapePrefab))
+			if (!_shapeFeatureManager.TryGetShapePrefab(shapeType.ToString(), out BaseShape shapePrefab))
 			{
 				Debug.LogWarning($"Shape with type {shapeType} does not exist");
 				return;
