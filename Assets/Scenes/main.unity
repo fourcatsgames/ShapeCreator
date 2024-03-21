@@ -379,6 +379,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _layer: {fileID: 931003652}
   _commandPanelPrefab: {fileID: 7551517719100157037, guid: 7af81c521a44744ca8f84dd251f3bf73, type: 3}
+  _commandNames:
+  - Create
+  - Scale
+  - Rotate
+  - Move
+  - Change Color
+  - Destroy
 --- !u!1 &686288526
 GameObject:
   m_ObjectHideFlags: 0

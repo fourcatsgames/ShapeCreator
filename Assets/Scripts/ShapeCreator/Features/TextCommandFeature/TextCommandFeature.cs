@@ -7,6 +7,7 @@ namespace ShapeCreator.Features.TextCommandFeature
 	{
 		private CommandFeatureManager _commandFeatureManager;
 		private CommandPanel _commandPanel;
+		private TextCommandParser _textCommandParser;
 		
 		public void Inject(BaseManager manager)
 		{
@@ -15,13 +16,15 @@ namespace ShapeCreator.Features.TextCommandFeature
 		
 		public void Init()
 		{
+			_textCommandParser = new TextCommandParser(_commandFeatureManager.CommandNames);
 			_commandPanel = Object.Instantiate(_commandFeatureManager.CommandPanelPrefab, _commandFeatureManager.Layer);
 			_commandPanel.SendButton.onClick.AddListener(OnSendButtonClick);
 		}
 		
 		private void OnSendButtonClick()
 		{
-			
+			ICommand command = _textCommandParser.Parse(_commandPanel.Message);
+			command.Execute();
 		}
 		
 		public void Destroy()
