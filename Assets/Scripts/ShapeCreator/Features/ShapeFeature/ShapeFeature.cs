@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Common;
+using Common.GlobalEvents;
 using UnityEngine;
 
 namespace ShapeCreator.Features.ShapeFeature
@@ -14,22 +15,16 @@ namespace ShapeCreator.Features.ShapeFeature
 			_shapeFeatureManager = (ShapeFeatureManager)manager;
 		}
 
-		public void CreateShape(string shapeId, string shapeType)
+		public void CreateShape(string shapeId, ShapeType shapeType)
 		{
 			// check if shape exists
 			if (_shapes.ContainsKey(shapeId))
 			{
-				Debug.LogWarning($"Shape with id {shapeId} already exists");
+				EventBroadcaster.Broadcast(new InvalidEntryEvent($"Shape with id {shapeId} already exists"));
 				return;
 			}
-
-			// check if shape type exists
-			if (!_shapeFeatureManager.TryGetShapePrefab(shapeType, out BaseShape shapePrefab))
-			{
-				Debug.LogWarning($"Shape with type {shapeType} does not exist");
-				return;
-			}
-
+			
+			BaseShape shapePrefab = _shapeFeatureManager.GetShapePrefab(shapeType.ToString());
 			BaseShape shape = Object.Instantiate(shapePrefab, _shapeFeatureManager.Layer);
 			_shapes.Add(shapeId, shape);
 			
@@ -44,16 +39,22 @@ namespace ShapeCreator.Features.ShapeFeature
 				Object.Destroy(shape.gameObject);
 			}
 			else
-				Debug.LogWarning($"Shape with id {shapeId} does not exist");
+			{
+				EventBroadcaster.Broadcast(new InvalidEntryEvent($"Shape with id {shapeId} does not exist"));
+			}
 		}
 
 		public void MoveShape(string shapeId, Vector2 position)
 		{
 			// Move shape
 			if (TryGetShape(shapeId, out BaseShape shape))
+			{
 				shape.transform.localPosition = position;
+			}
 			else
-				Debug.LogWarning($"Shape with id {shapeId} does not exist");
+			{
+				EventBroadcaster.Broadcast(new InvalidEntryEvent($"Shape with id {shapeId} does not exist"));
+			}
 		}
 
 		public void RotateShape(string shapeId, float angle)
@@ -65,7 +66,7 @@ namespace ShapeCreator.Features.ShapeFeature
 			}
 			else
 			{
-				Debug.LogWarning($"Shape with id {shapeId} does not exist");
+				EventBroadcaster.Broadcast(new InvalidEntryEvent($"Shape with id {shapeId} does not exist"));
 			}
 		}
 
@@ -73,9 +74,13 @@ namespace ShapeCreator.Features.ShapeFeature
 		{
 			// Scale shape
 			if (TryGetShape(shapeId, out BaseShape shape))
+			{
 				shape.transform.localScale = new Vector3(scale, scale, 1);
+			}
 			else
-				Debug.LogWarning($"Shape with id {shapeId} does not exist");
+			{
+				EventBroadcaster.Broadcast(new InvalidEntryEvent($"Shape with id {shapeId} does not exist"));
+			}
 		}
 
 		public void ChangeShapeColor(string shapeId, Color color)
@@ -84,7 +89,9 @@ namespace ShapeCreator.Features.ShapeFeature
 			if (TryGetShape(shapeId, out BaseShape shape))
 				shape.ChangeColor(color);
 			else
-				Debug.LogWarning($"Shape with id {shapeId} does not exist");
+			{
+				EventBroadcaster.Broadcast(new InvalidEntryEvent($"Shape with id {shapeId} does not exist"));
+			}
 		}
 
 		private bool TryGetShape(string shapeId, out BaseShape shape)

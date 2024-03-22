@@ -386,6 +386,12 @@ MonoBehaviour:
   - Move
   - Change Color
   - Destroy
+  _colorNames:
+  - White
+  - Black
+  - Red
+  - Green
+  - Blue
 --- !u!1 &686288526
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,7 +939,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _layer: {fileID: 1102641571}
   _popUpPrefabs:
-  - {fileID: 5773975747818009038, guid: 05f0694fe2c1347ad87328de02cbc236, type: 3}
+  - {fileID: 1536392708361280376, guid: 05f0694fe2c1347ad87328de02cbc236, type: 3}
 --- !u!4 &1992145876
 Transform:
   m_ObjectHideFlags: 0

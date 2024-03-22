@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3058cf554ed443b28d8adecddac75c93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputField: {fileID: 0}
+  _inputField: {fileID: 6352295483520639591}
   _sendButton: {fileID: 8674756930685079328}
 --- !u!1 &2273841504519698427
 GameObject:

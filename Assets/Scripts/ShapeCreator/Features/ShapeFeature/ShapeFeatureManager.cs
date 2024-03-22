@@ -23,5 +23,18 @@ namespace ShapeCreator.Features.ShapeFeature
 			shapePrefab = null;
 			return false;
 		}
+
+		public BaseShape GetShapePrefab(string shapeType)
+		{
+			for (int i = 0; i < _shapeNames.Count; i++)
+			{
+				if (_shapeNames[i] == shapeType)
+				{
+					return _shapePrefabs[i];
+				}
+			}
+
+			return null;
+		}
 	}
 }

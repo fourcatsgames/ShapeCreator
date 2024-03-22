@@ -16,7 +16,7 @@ namespace ShapeCreator.Features.TextCommandFeature
 		
 		public void Init()
 		{
-			_textCommandParser = new TextCommandParser(_commandFeatureManager.CommandNames);
+			_textCommandParser = new TextCommandParser(_commandFeatureManager.CommandNames, _commandFeatureManager.AvailableColorNames);
 			_commandPanel = Object.Instantiate(_commandFeatureManager.CommandPanelPrefab, _commandFeatureManager.Layer);
 			_commandPanel.SendButton.onClick.AddListener(OnSendButtonClick);
 		}
@@ -24,7 +24,7 @@ namespace ShapeCreator.Features.TextCommandFeature
 		private void OnSendButtonClick()
 		{
 			ICommand command = _textCommandParser.Parse(_commandPanel.Message);
-			command.Execute();
+			command?.Execute();
 		}
 		
 		public void Destroy()
