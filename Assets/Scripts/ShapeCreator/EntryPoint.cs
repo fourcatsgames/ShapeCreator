@@ -1,5 +1,6 @@
 using Common;
 using Common.GlobalEvents;
+using ShapeCreator.Features.LoggerFeature;
 using ShapeCreator.Features.PopUpFeature;
 using ShapeCreator.Features.PopUpFeature.PopupBehaviours;
 using ShapeCreator.Features.ShapeFeature;
@@ -20,6 +21,11 @@ namespace ShapeCreator
 
 		private void Start()
 		{
+			LoggerFeature loggerFeature = new LoggerFeature();
+			FeatureResolver.AddFeature(loggerFeature);
+			
+			loggerFeature.Init();
+			
 			PopUpFeature popupFeature = new PopUpFeature();
 			popupFeature.Inject(_popupManager);
 			FeatureResolver.AddFeature(popupFeature);

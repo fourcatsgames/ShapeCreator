@@ -23,6 +23,8 @@ namespace ShapeCreator.Features.TextCommandFeature
 		
 		private void OnSendButtonClick()
 		{
+			Debug.Log("[TEXT_COMMAND]" + _commandPanel.Message);
+			
 			ICommand command = _textCommandParser.Parse(_commandPanel.Message);
 			command?.Execute();
 		}
