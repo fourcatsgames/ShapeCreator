@@ -23,6 +23,8 @@ namespace ShapeCreator.Features.TextCommandFeature
 		
 		private void OnSendButtonClick()
 		{
+			Debug.Log("[TEXT_COMMAND]" + _commandPanel.Message);
+			
 			ICommand command = _textCommandParser.Parse(_commandPanel.Message);
 			command?.Execute();
 		}
@@ -30,7 +32,6 @@ namespace ShapeCreator.Features.TextCommandFeature
 		public void Destroy()
 		{
 			_commandPanel.SendButton.onClick.RemoveListener(OnSendButtonClick);
-			Object.Destroy(_commandPanel.gameObject);
 		}
 	}
 }
