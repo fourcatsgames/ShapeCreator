@@ -32,7 +32,6 @@ namespace ShapeCreator.Features.TextCommandFeature
 		public void Destroy()
 		{
 			_commandPanel.SendButton.onClick.RemoveListener(OnSendButtonClick);
-			Object.Destroy(_commandPanel.gameObject);
 		}
 	}
 }

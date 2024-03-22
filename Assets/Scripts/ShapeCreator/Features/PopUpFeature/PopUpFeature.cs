@@ -73,6 +73,11 @@ namespace ShapeCreator.Features.PopUpFeature
 		{
 			_popupFeatureManager = (PopupFeatureManager)popupManager;
 		}
+		
+		public void Destroy()
+		{
+			EventBroadcaster.Remove<EventPopupClosed>(OnPopupClosed);
+		}
 	}
 	
 	public class NODATA { }

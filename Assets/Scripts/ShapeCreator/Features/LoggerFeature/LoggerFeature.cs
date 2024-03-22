@@ -8,6 +8,8 @@ namespace ShapeCreator.Features.LoggerFeature
 	public class LoggerFeature : IFeature
 	{
 		private string TAG = "[TEXT_COMMAND]";
+		
+		public string LogsFolderPath => _logsFolderPath;
 		private string _logsFolderPath;
 		private FileWriter _fileWriter;
 		
@@ -22,7 +24,7 @@ namespace ShapeCreator.Features.LoggerFeature
 			
 			_fileWriter = new FileWriter(_logsFolderPath);
 			
-			Application.logMessageReceived += OnLogMessageReceived;
+			Application.logMessageReceivedThreaded += OnLogMessageReceived;
 		}
 		
 		private void OnLogMessageReceived(string condition, string stacktrace, LogType type)
@@ -30,9 +32,13 @@ namespace ShapeCreator.Features.LoggerFeature
 			if (condition.Length <= TAG.Length || condition.Substring(0, TAG.Length) != TAG) return;
 			
 			condition = condition.Substring(TAG.Length);
-			_fileWriter.WriteLog(condition);
+			_fileWriter.WriteLog(new LogMessage(condition));
 		}
 		
-		
+		public void Destroy()
+		{
+			Application.logMessageReceivedThreaded -= OnLogMessageReceived;
+			_fileWriter.Dispose();
+		}
 	}
 }

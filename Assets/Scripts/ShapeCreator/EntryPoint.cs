@@ -1,3 +1,5 @@
+
+using System;
 using Common;
 using Common.GlobalEvents;
 using ShapeCreator.Features.LoggerFeature;
@@ -48,7 +50,30 @@ namespace ShapeCreator
 			PopUpFeature popupFeature = FeatureResolver.GetFeature<PopUpFeature>();
 			popupFeature.AddPopUp<InvalidEntryPopup,InvalidEntryEvent>(e);
 		}
+		
+#if UNITY_EDITOR
 
+		private void Update()
+		{
+			if (!Input.GetKeyUp(KeyCode.L)) return;
+			
+			LoggerFeature loggerFeature = FeatureResolver.GetFeature<LoggerFeature>();
+			UnityEditor.EditorUtility.RevealInFinder(loggerFeature.LogsFolderPath);
+		}
+
+#endif
+
+		private void OnDestroy()
+		{
+			LoggerFeature loggerFeature = FeatureResolver.GetFeature<LoggerFeature>();
+			loggerFeature.Destroy();
+			
+			TextCommandFeature textCommandFeature = FeatureResolver.GetFeature<TextCommandFeature>();
+			textCommandFeature.Destroy();
+			
+			PopUpFeature popupFeature = FeatureResolver.GetFeature<PopUpFeature>();
+			popupFeature.Destroy();
+		}
 	}
 	
 }
