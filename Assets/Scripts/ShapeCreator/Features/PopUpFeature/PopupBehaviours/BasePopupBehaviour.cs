@@ -29,5 +29,11 @@ namespace ShapeCreator.Features.PopUpFeature.PopupBehaviours
 			enabled = true;
 			gameObject.SetActive(true);
 		}
+		
+		public virtual void Show<TData>(TData data)
+		{	
+			enabled = true;
+			gameObject.SetActive(true);
+		}
 	}
 }

@@ -14,7 +14,8 @@ namespace ShapeCreator
 	{
 		Circle,
 		Square,
-		Triangle
+		Triangle, 
+		None,
 	}
 	
 	public enum ColorType

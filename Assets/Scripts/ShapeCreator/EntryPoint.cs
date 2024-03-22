@@ -1,5 +1,7 @@
 using Common;
+using Common.GlobalEvents;
 using ShapeCreator.Features.PopUpFeature;
+using ShapeCreator.Features.PopUpFeature.PopupBehaviours;
 using ShapeCreator.Features.ShapeFeature;
 using ShapeCreator.Features.TextCommandFeature;
 using UnityEngine;
@@ -32,7 +34,15 @@ namespace ShapeCreator
 
 			textCommandFeature.Init();
 			
+			EventBroadcaster.Add<InvalidEntryEvent>(OnInvalidEntryEvent);
+		}
+		
+		private void OnInvalidEntryEvent(InvalidEntryEvent e)
+		{
+			PopUpFeature popupFeature = FeatureResolver.GetFeature<PopUpFeature>();
+			popupFeature.AddPopUp<InvalidEntryPopup,InvalidEntryEvent>(e);
 		}
 
 	}
+	
 }

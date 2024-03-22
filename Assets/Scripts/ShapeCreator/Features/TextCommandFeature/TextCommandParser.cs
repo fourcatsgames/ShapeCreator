@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Common;
+using Common.GlobalEvents;
 using ShapeCreator.Features.TextCommandFeature.Commands;
 using UnityEngine;
 
@@ -10,27 +12,39 @@ namespace ShapeCreator.Features.TextCommandFeature
 	//text command parser utility
 	public class TextCommandParser
 	{
+		private const string INCORRECT_FORMAT = "Incorrect command format.";
+		
 		private readonly List<string> _commandNames;
 		private readonly List<string> _shapeTypes;
 		
 		private CommandType _command;
-		
-		public TextCommandParser(List<string> commandNames)
+		private List<string> _availableColors;
+
+		public TextCommandParser(List<string> commandNames, List<string> colors)
 		{
 			_commandNames = commandNames;
+			_availableColors = colors;
 		}
 		
 		public ICommand Parse(string message)
 		{
-
+			message = Utils.RemoveZWSP(message,string.Empty);
+			
 			foreach (string commandName in _commandNames)
 			{
 				//if command name found and it is first
 				if (message.Contains(commandName) && message.IndexOf(commandName, System.StringComparison.Ordinal) == 0)
 				{
-					if (!Enum.TryParse(commandName, out CommandType commandType))
+					string fixedCommandName = commandName.Replace(" ", string.Empty);
+					if (!Enum.TryParse(fixedCommandName, out CommandType commandType))
 					{
-						Debug.Log("Invalid command");
+						EventBroadcaster.Broadcast(new InvalidEntryEvent("Only the following commands are available:  Create, Destroy, Move, Rotate, Scale, Change Color"));
+						return null;
+					}
+					
+					if (message.Length <= commandName.Length)
+					{
+						EventBroadcaster.Broadcast(new InvalidEntryEvent(INCORRECT_FORMAT));
 						return null;
 					}
 					
@@ -40,9 +54,8 @@ namespace ShapeCreator.Features.TextCommandFeature
 					return GenerateCommand(commandType, commandParams);
 				}
 			}
-			
-			
-			
+
+			EventBroadcaster.Broadcast(new InvalidEntryEvent("Only the following commands are available:  Create, Destroy, Move, Rotate, Scale, Change Color"));
 			return null;
 		}
 		
@@ -67,7 +80,7 @@ namespace ShapeCreator.Features.TextCommandFeature
 					return new ScaleCommand(commandParams);
 				
 				case CommandType.ChangeColor:
-					return new ChangeColorCommand(commandParams);
+					return new ChangeColorCommand(commandParams, _availableColors);
 				
 				default:
 					Debug.Log("Invalid command");

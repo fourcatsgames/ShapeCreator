@@ -1,10 +1,11 @@
+using Common.GlobalEvents;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace ShapeCreator.Features.PopUpFeature.PopupBehaviours
 {
-	public class MessagePopup : BasePopupBehaviour
+	public class InvalidEntryPopup : BasePopupBehaviour
 	{
 		[SerializeField] Button _closeButton;
 		[SerializeField] TMP_Text _titleText;
@@ -15,6 +16,18 @@ namespace ShapeCreator.Features.PopUpFeature.PopupBehaviours
 			_closeButton.onClick.AddListener(OnClose);
 		}
 
+		public override void Show<TData>(TData data)
+		{
+			base.Show(data);
+
+			InvalidEntryEvent popupData = data as InvalidEntryEvent;
+
+			if (popupData == null) return;
+			
+			_titleText.text = popupData.Title;
+			_descriptionText.text = popupData.Description;
+		}
+		
 		public override void OnClose()
 		{
 			base.OnClose();

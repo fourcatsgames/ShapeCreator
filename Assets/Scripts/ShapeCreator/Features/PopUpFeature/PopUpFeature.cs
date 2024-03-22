@@ -3,13 +3,15 @@ using Common;
 using ShapeCreator.Features.PopUpFeature.Events;
 using ShapeCreator.Features.PopUpFeature.PopupBehaviours;
 using UnityEngine;
+using Object = System.Object;
+
 
 namespace ShapeCreator.Features.PopUpFeature
 {
 	public class PopUpFeature : IFeature
 	{
 		private PopupFeatureManager _popupFeatureManager;
-		private Queue<BasePopupBehaviour> _popupsQueue = new Queue<BasePopupBehaviour>();
+		private Queue<DataContainer<BasePopupBehaviour,Object>> _popupsQueue = new Queue<DataContainer<BasePopupBehaviour, Object>>();
 
 		private bool _isPopupOpened;
 
@@ -23,7 +25,7 @@ namespace ShapeCreator.Features.PopUpFeature
 		{
 			if (_popupFeatureManager.TryGetPopup(out T popup))
 			{
-				_popupsQueue.Enqueue(popup);
+				_popupsQueue.Enqueue(new DataContainer<BasePopupBehaviour, Object>(popup, null));
 			}
 
 			if (_isPopupOpened) return;
@@ -31,6 +33,18 @@ namespace ShapeCreator.Features.PopUpFeature
 			ShowPopup();
 		}
 
+		public void AddPopUp<T,TData>(TData data) where T : BasePopupBehaviour where TData : class
+		{
+			if (_popupFeatureManager.TryGetPopup(out T popup))
+			{
+				_popupsQueue.Enqueue(new DataContainer<BasePopupBehaviour, object>(popup, data));
+			}
+
+			if (_isPopupOpened) return;
+
+			ShowPopup();
+		}
+		
 		private void ShowPopup()
 		{
 			//check if queue is empty
@@ -43,10 +57,11 @@ namespace ShapeCreator.Features.PopUpFeature
 			_isPopupOpened = true;
 
 			//get popup from queue
-			BasePopupBehaviour popup = _popupsQueue.Dequeue();
-			GameObject p = GameObject.Instantiate(popup.gameObject, _popupFeatureManager.Layer);
-			popup = p.GetComponent<BasePopupBehaviour>();
-			popup.Show();
+			DataContainer<BasePopupBehaviour, Object> container = _popupsQueue.Dequeue();
+			GameObject p = GameObject.Instantiate(container.Popup.gameObject, _popupFeatureManager.Layer);
+			
+			BasePopupBehaviour popup = p.GetComponent<BasePopupBehaviour>();
+			popup.Show(container.Data);
 		}
 
 		private void OnPopupClosed(EventPopupClosed e)
@@ -57,6 +72,21 @@ namespace ShapeCreator.Features.PopUpFeature
 		public void Inject(BaseManager popupManager)
 		{
 			_popupFeatureManager = (PopupFeatureManager)popupManager;
+		}
+	}
+	
+	public class NODATA { }
+
+	class DataContainer<T,TData> where T : BasePopupBehaviour where TData : class
+	{
+		public T Popup { get; }
+		public TData Data { get; }
+
+		public DataContainer(T popup, TData data) 
+		{
+			Popup = popup;
+			Data = data;
+			
 		}
 	}
 }
