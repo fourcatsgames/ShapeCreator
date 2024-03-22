@@ -16,4 +16,13 @@ namespace ShapeCreator
 		Square,
 		Triangle
 	}
+	
+	public enum ColorType
+	{
+		Red,
+		Green,
+		Blue,
+		White,
+		Black
+	}
 }

@@ -13,30 +13,21 @@ namespace ShapeCreator.Features.TextCommandFeature.Commands
 			//command format: Move mySuperSquare -10, 20
 			
 			_shapeId = arguments.Substring(0, arguments.IndexOf(' '));
-			string coords = arguments.Substring(arguments.Length + 1);
+			string coords = arguments.Substring(_shapeId.Length + 1);
 			
-			string[] coordsArray = coords.Split(',');
+			string[] parts = coords.Split(',');
+
 			
-			if (coordsArray.Length >= 2)
+			if (float.TryParse(parts[0].Trim(), out float x) && float.TryParse(parts[1].Trim(), out float y))
 			{
-				if (float.TryParse(coordsArray[0], out float x))
-				{
-					_coordsVector.x = x;
-				}
-				
-				if (float.TryParse(coordsArray[1], out float y))
-				{
-					_coordsVector.y = y;
-				}
+				// Create a Vector2 using the parsed coordinates
+				_coordsVector = new Vector2(x, y);
 				
 			}
 			else
 			{
-				Debug.Log("Invalid command");
-				return;
+				Debug.LogError("Failed to parse coordinates as floats.");
 			}
-			
-			
 			
 		}
 		

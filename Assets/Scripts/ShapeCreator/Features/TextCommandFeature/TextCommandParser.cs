@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using ShapeCreator.Features.TextCommandFeature.Commands;
 using UnityEngine;
 
@@ -23,8 +22,7 @@ namespace ShapeCreator.Features.TextCommandFeature
 		
 		public ICommand Parse(string message)
 		{
-			string commandParams = "";
-			
+
 			foreach (string commandName in _commandNames)
 			{
 				//if command name found and it is first
@@ -36,16 +34,10 @@ namespace ShapeCreator.Features.TextCommandFeature
 						return null;
 					}
 					
-					commandParams = message.Substring(commandName.Length - 1); //remove the command name from the input
-					commandParams = commandParams.Substring(1); //trim first space, can not use TrimStart() because it can change shapeId in case of shapeId starts with space
-					
+					string commandParams = message.Substring(commandName.Length + 1); //trim first space, can not use TrimStart() because it can change shapeId in case of shapeId starts with space
+
 					//fabric method
 					return GenerateCommand(commandType, commandParams);
-				}
-				else
-				{
-					Debug.Log("Invalid command");
-					return null;
 				}
 			}
 			
@@ -67,19 +59,15 @@ namespace ShapeCreator.Features.TextCommandFeature
 					
 				case CommandType.Move:
 					return new MoveCommand(commandParams);
-					
 				
 				case CommandType.Rotate:
 					return new RotateCommand(commandParams);
-					
 				
 				case CommandType.Scale:
 					return new ScaleCommand(commandParams);
-					
 				
 				case CommandType.ChangeColor:
 					return new ChangeColorCommand(commandParams);
-					
 				
 				default:
 					Debug.Log("Invalid command");
